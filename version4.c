@@ -3,7 +3,7 @@
  * Now the randomly chosen pivot can lie on either side of median(index K),
  * if it lies to right, then Ok
  * but if it lies to left, I will loose the K numbers I got
- * So, in such a case, I discard this pivot and chose a frsh pivot
+ * So, in such a case, I discard this pivot and chose a fresh pivot
  * We repeat until all elements are covered,
  * Space Complexity : O(2*K)
  * Time Complexity : O(N*K)
@@ -26,7 +26,9 @@ int main(int argc, char* argv[]){
 	int input[2*K];
 	
 	for(int i=0;i<2*K;i++){
-		fscanf(fp,"%d",&input[i]);	
+		fscanf(fp,"%d",&input[i]);
+		printf("input %d\n",input[i]);
+		fflush(stdout);	
 	}
 	
 	int pivot=call(input,0,2*K-1,fp);
@@ -36,56 +38,70 @@ int main(int argc, char* argv[]){
 	for(int i=0;i<K;i++){
 		printf("%d\n",input[i]);	
 	}
-
 }
 
 int call(int input[],int start,int end, FILE* fp){
+	//printf("FILE*",fp);
 
 	int pivot=partition(input,start,end);
-	printf("IN CALL pivot is %d",pivot);
+	printf("IN CALL pivot is %d\n",pivot);
+	
+	printf("printing array after partitioning in call out\n");
+	for(int i=0;i<2*K;i++){
+		printf("%d\n", input[i]);	
+		fflush(stdout);
+	}
+	
 	
 	while(pivot<K){
-		pivot=partition(input,0,2*K-1);
+		pivot=partition(input,start,end);
+		
+		printf("printing array after partitioning in frist while\n");
+		for(int i=0;i<2*K;i++){
+			printf("%d\n", input[i]);	
+			fflush(stdout);
+		}
 		printf("FIRST PIVOT FOUND INSIDE WHILE %d\n",pivot);
 	}
 	
 	int k=pivot+1;
-	printf("ou of first while k is %d",k);
-	while(k<2*K && fscanf(fp,"%d",&input[k++])!=EOF ){
-		printf(" k inside while %d and value is %d \n",k-1,input[k-1]);
-		while(k<2*K){
-			fscanf(fp,"%d",&input[k++]);
+	printf("out of first while k is %d",k);
+	if(k<2*K){
+		while(fscanf(fp,"%d",&input[k++])!=EOF ){
+			printf(" k inside while %d and value is %d \n",k-1,input[k-1]);
+			while(k<2*K ){
+			
+				fscanf(fp,"%d",&input[k++])!=EOF)
+				printf("inside while k is %d and value is %d\n",k-1,input[k-1]);
+				 //changes to be done here, check for EOF without scanning anything somehow
+			}
+			call(input,start,end,fp);
 		}
-		call(input,start,end,fp);
 	}
 	return pivot;
 
 
 }	
 	
-int partition(int arr[], int start, int end)
-{
-        if (start == end)
+int partition(int arr[],int start,int end){
+
+        if(start==end)
                 return start;
 
-        int i, j, pos;
-        i = start - 1;
+        int i,j,pos;
+        i = start-1;
         j = start;
-        pos = pivot(arr, start, end);
-        swap(arr, pos, end);
-        while (j < end) 
-        {
-                if (arr[j] <= arr[end]) 
-                {
-                        i = i + 1;
-                        swap(arr, i, j);
-                }
-                j++;
-        }
-        i = i + 1;
-        swap(arr, i, end);
-	printf("pivot after partition is %d\n",i);
-        return i;
+        pos=pivot(arr,start,end);
+        swap(arr,pos,end);
+        for(int j=start;j<end;j++){
+		if(arr[j]<=arr[end]){
+			i=i+1;	
+			swap(arr,i,j);	
+		}	
+		
+	}
+	swap(arr,i+1,end);
+	return i+1;
 }
 
 int pivot(int arr[], int start, int end)
@@ -94,8 +110,8 @@ int pivot(int arr[], int start, int end)
 		int p = start + rand() % (end - start + 1);
 		/*printf("start is %d end is %d and second part gives %d\n",start,end,rand()%(end-start+1));
 		fflush(stdout);*/
-		printf("pivot index %d\n",p);
-		fflush(stdout);
+		//printf("pivot index %d\n",p);
+		//fflush(stdout);
 		return p;
 //	}
 	/*else{
@@ -106,9 +122,8 @@ int pivot(int arr[], int start, int end)
 	}*/
 }
 
-void swap(int arr[], int p1, int p2) 
-{
-        int t = arr[p1];
-        arr[p1] = arr[p2];
-        arr[p2] = t;
+void swap(int num[], int a ,int b){
+	int temp=num[a];
+	num[a]=num[b];
+	num[b]=temp;
 }
