@@ -152,16 +152,30 @@ class MaxHeap{
     }
 
     void restoreDown(){
-        int parindex = 0;
-        Node node = this.maxheap[parindex];
-        int start = this.maxheap[0].data;
-
-        while(parindex < size && (start < this.maxheap[ 2* parindex + 1 ].data || start < this.maxheap[ 2* parindex + 2].data)){
-            int min = ( this.maxheap[ 2 * parindex + 1].data  < this.maxheap[2 * parindex + 2].data) ? (2 * parindex + 1) : ( 2* parindex + 2);
-            this.maxheap[parindex] = this.maxheap[min];
-            parindex = min;
+      Node node = this.maxheap[0];
+       int pos = 0;
+       int left = 2 * pos + 1;
+       int right = left + 1;
+       while(right < this.size){
+        int min = (maxheap[left].data > maxheap[right].data)? left : right;
+        if(maxheap[min].data > node.data){
+            maxheap[pos] = maxheap[min];
+            pos = min;
+            left = 2* pos + 1;
+            right = left +1;     
         }
-        this.maxheap[parindex] = node;
+        else{
+            break;
+        }
+       
+       }
+       if(left == size - 1){
+            if(maxheap[left].data < node.data){
+               pos = left;
+            }
+
+       }
+        maxheap[pos] = node;
     }
 }
 
@@ -200,9 +214,9 @@ public class RunningMedian {
             if( data < maxheap.top() ){
                 int size = maxheap.size;
                 if(comp <= -1){ //max is bigger, I am insering in max, so not ok
-                    size++;
+                 
                     maxheap.maxheap[size] = node;
-                    size++;
+                    maxheap.size++;
                     System.out.println("inserted in to ooooooooooooo maxheap is  and size"+ data + maxheap.size);
                 }
                 else{
