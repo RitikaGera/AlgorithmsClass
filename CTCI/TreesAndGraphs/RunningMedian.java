@@ -190,7 +190,7 @@ public class RunningMedian {
         int a = sc.nextInt();
         System.out.println(a);
         int b = sc.nextInt();
-        System.out.println((double)((a + b)/2));
+        System.out.println((double)(a + b)/2);
 
         
         if( a < b){
@@ -211,65 +211,31 @@ public class RunningMedian {
             Node node = new Node(data);
             int comp = comp(minheap.size, maxheap.size);
             System.out.println("compcalc "+ comp);
-            if( data < maxheap.top() ){
-                int size = maxheap.size;
-                if(comp <= -1){ //max is bigger, I am insering in max, so not ok
-                 
-                    maxheap.maxheap[size] = node;
-                    maxheap.size++;
-                    System.out.println("inserted in to ooooooooooooo maxheap is  and size"+ data + maxheap.size);
-                }
-                else{
+            if( data < maxheap.top()){
+                if(comp == 0 || comp == 1 ){
                     maxheap.MaxHeapInsert(node);
-                    System.out.println("inserted in to maxheap is "+ data);    
                 }
-                
-                
-            }
-            else{
-                int size = minheap.size;
-                System.out.println(size);
-                if(comp >= 1){ // min is greater and you are inserting in min
-                    minheap.minheap[size] = node;
-                    minheap.size++;
-                    minheap.print();
-                    
-
-                    System.out.println("inserted in to min oooooo heap is and size is"+ data + minheap.size);
-                }
-                else{
-                    minheap.MinHeapInsert(node); 
-                    System.out.println("inserted in to min heap Normally is "+ data);   
-                }
-                
-            }
-            System.out.println("min "+ minheap.size + " max"+ maxheap.size);
-            comp = comp(minheap.size, maxheap.size);
-            System.out.println("compcalc2 "+ comp);
-            if( comp == 0 ){
-                System.out.println("median equal "+(double) ( maxheap.top() + minheap.top() ) /2);   
-            }
-            else if( comp == 1){ // minheap is bigger
-                System.out.println("median min "+ minheap.top());
-            }
-            else if( comp == -1){
-                System.out.println("median  max "+ maxheap.top());
-            }
-            else{
-                if( a > b){
-                    int mintop = minheap.top();
-                    minheap.delete();
-                    maxheap.MaxHeapInsert(new Node(mintop));
-                    System.out.println("med  "+(double)( maxheap.top() + minheap.top() ) /2);
-                }
-                else{
-                    int maxtop = maxheap.top();
+                else{ //comp == -1, i.e. max heap is bigger and wuld get bigger by more than 1 element
+                    int root = maxheap.top();
                     maxheap.delete();
-                    minheap.MinHeapInsert(new Node(maxtop));
-                    System.out.println("med  " +(double)( maxheap.top() + minheap.top() ) /2);
+                    minheap.MinHeapInsert(new Node(root));
+                    maxheap.MaxHeapInsert(node);
                 }
+            }
+            if( data > maxheap.top() ){
+                if(comp == 0 || comp == -1 ){
+                    minheap.MinHeapInsert(node);
+                }
+                else{ //comp == 1, i.e. min heap is bigger and wuld get bigger by more than 1 element
+                    int root = minheap.top();
+                    minheap.delete();
+                    minheap.MinHeapInsert(new Node(root));
+                    maxheap.MaxHeapInsert(node);
+                }
+
             }
         }
+            
         minheap.print();
         maxheap.print();
     }
