@@ -39,10 +39,8 @@ public class SortedArray_BinarySearchTree{
 			int mid = ( low + high )/2;
 			bst.insert(num[mid]);
 			System.out.println("here "+ bst.getRoot());
-			make_BST(bst, num, 0, mid - 1);
-			make_BST(bst, num, mid + 1, num.length - 1);
-		
-		
+			make_BST(bst, num,low, mid - 1);
+			make_BST(bst, num, mid + 1, high);
 			return bst;
 		
 		
