@@ -2,6 +2,8 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Scanner;
+import java.util.Arrays;
+
 
 public class SortedArray_BinarySearchTree{
 	
@@ -20,20 +22,26 @@ public class SortedArray_BinarySearchTree{
 		for( int i = 0 ; i < n; i++){
 			num[i] = sc.nextInt();
 		}
-		SortedArray_BinarySearchTree mytree = new SortedArray_BinarySearchTree();
+		Arrays.sort(num);
 		BinarySearchTree bst = new BinarySearchTree();
-		bst = mytree.make_BST(bst, num, 0, num.length);
+		SortedArray_BinarySearchTree obj = new SortedArray_BinarySearchTree();
+		bst = obj.make_BST(bst, num, 0 , num.length - 1);
+		System.out.println(bst.getRoot());
 		bst.InOrderTraversal(bst.getRoot());
+		
 	}
 
 	public BinarySearchTree make_BST(BinarySearchTree bst, int[] num, int low, int high){
+		if( low > high){
+			return null;
+		}
 		
-		if( low < high){
 			int mid = ( low + high )/2;
 			bst.insert(num[mid]);
-			make_BST(bst, num, 0, mid);
+			System.out.println("here "+ bst.getRoot());
+			make_BST(bst, num, 0, mid - 1);
 			make_BST(bst, num, mid + 1, num.length - 1);
-		}
+		
 		
 			return bst;
 		
