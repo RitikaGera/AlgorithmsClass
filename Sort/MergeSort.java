@@ -1,95 +1,67 @@
-import java.util.*;
-public class MergeSort {
+//Merge Sort
+import java.util.Scanner;
 
-	static int[] sorted = new int[100];
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		int[] input={4, 7, 19, 16, 14, 18, 17, 13, 10, 2, 3, 8};
-		mergesort(input,0, input.length-1);
-		//merge m = new merge();
-		//m.merger(input);
-		for( int i = 0 ; i < input.length; i++){
-			System.out.println(input[i]);
+public class MergeSort{
+	public static void main(String[] args){
+		System.out.println("Enter number of elements");
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		int[] arr =  new int[n];
+		System.out.println("Enter elements");
+		for( int i = 0; i < n; i++){
+			arr[i] = sc.nextInt();
 		}
+		MergeSort obj = new MergeSort();
+		obj.mergeSort(arr, 0, arr.length - 1);
+		printArray(arr);
 
 	}
-	
-	public static void mergesort(int[] input, int start, int end){
-		ArrayList<Integer> temp1 = new ArrayList();
-		ArrayList<Integer> temp2 = new ArrayList();
-		
-		for( int i =0; i< input.length - 1;){
-			int j =i;
-			if(temp1.isEmpty()){
-				temp1.add(input[i]);
-			    j = i;
-			//	System.out.println("j is"+ j);
-				if( j< input.length){
-					while( input[j+1] > input[j] ){
-						temp1.add(input[j+1]);
-						j++;
-					}
-				}
-				j = j + 1;
-			}
-			temp2.add(input[j]);
-			if( j <input.length){
-				while( input[j] > input[j + 1]){
-					temp2.add(input[j+1]);
-					j++;
-				}
-			}
-			j++;
-			//ArrayList<Integer> temp = new ArrayList();
-			temp1 = merge(temp1,temp2,start);
-			//System.out.println("start"+ start);
-			
-			
-			
-			i = j;
-			
-			}
-			
-	}
-	
-	
-	public static ArrayList<Integer> merge(ArrayList<Integer> temp1, ArrayList<Integer> temp2, int start){
-		ArrayList<Integer> left = temp1;
-		ArrayList<Integer> right = temp2;
-		ArrayList<Integer> temp = new ArrayList();
-		int size = temp2.size()-1;
-		
-		if(temp2.get(0) > temp2.get(1)){
-			for(int i = 0; i< temp2.size(); i++){
-				right.set(i,temp2.get(size));
-				size--;
-			}
+
+	public static void printArray(int[] arr){
+		for( int i = 0; i < arr.length; i++){
+			System.out.print(arr[i] + " ");
 		}
-		//left and right in increasing order now
+	}
+
+	public void mergeSort(int[] arr, int l, int r){
 		
-		
-		int i =start;
-		Iterator<Integer> it1 = temp1.iterator();
-		Iterator<Integer> it2 = temp2.iterator();
-		while(it1.hasNext() && it2.hasNext()){
-			int a = it1.next();
-			int b = it2.next();
-			if(a < b){
-				temp.add(a);
+		if( r > l){
+			int mid = ( l + r)/2;
+			mergeSort(arr,l, mid);
+			mergeSort(arr, mid + 1, r);
+			merge(arr, l, mid, r);
+		}
+	}
+
+	public void merge(int[] arr, int l, int m, int r){
+		int n1 = m - l + 1;
+		int n2 = r - m;
+		int[] left = new int[n1];
+		int[] right = new int[n2];
+		for( int i = 0; i < n1; i ++){
+			left[i] = arr[ l + i];
+		}
+		for( int i = 0; i < n2; i++){
+			right[i] = arr[ m + i + 1];
+		}
+		int i = 0, j = 0; // starting index for left and right arrays
+		int k = l; // starting index for main array
+		while( i < n1 && j < n2){
+			if( left[i] <= right[j]){
+				arr[k] = left[i];
+				i++;
 			}
 			else{
-				temp.add(b);
+				arr[k] = right[j];
+				j++;
 			}
+			k++;
 		}
-		while(it1.hasNext()){
-				temp.add(it1.next());
+		while( i < n1){
+			arr[k++] = left[i++];
 		}
-		while(it2.hasNext()){
-			    temp.add(it1.next());
+		while( j < n2){
+			arr[k++] = right[j++];
 		}
-		
-		return temp;
 	}
-	}
-
-
+}
