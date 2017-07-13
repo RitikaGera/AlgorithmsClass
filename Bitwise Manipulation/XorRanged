@@ -1,0 +1,2 @@
+//You are given a large range [a,b] where 'a' and 'b' can be typically between 1 and 4,000,000,000 inclusive. You have to find out the XOR of all the numbers 
+//in the given range.
